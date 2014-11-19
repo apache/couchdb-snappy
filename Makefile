@@ -1,14 +1,14 @@
 all: snappy eunit
 
 snappy:
-	./rebar compile
+	rebar compile
 
 eunit:
-	./rebar eunit
+	rebar eunit
 
 check: eunit
 
 clean:
-	./rebar clean
+	rebar clean
 	rm -fr priv ebin
 
