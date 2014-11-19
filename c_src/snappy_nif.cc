@@ -22,10 +22,6 @@
 #include "snappy/snappy.h"
 #include "snappy/snappy-sinksource.h"
 
-#ifdef OTP_R13B03
-#error OTP R13B03 not supported. Upgrade to R13B04 or later.
-#endif
-
 #ifdef __cplusplus
 #define BEGIN_C extern "C" {
 #define END_C }

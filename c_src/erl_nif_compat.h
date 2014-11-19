@@ -27,66 +27,6 @@ extern "C" {
 #include "erl_nif.h"
 
 
-#if ERL_NIF_MAJOR_VERSION == 0 && ERL_NIF_MINOR_VERSION == 1
-#define OTP_R13B03
-#elif ERL_NIF_MAJOR_VERSION == 1 && ERL_NIF_MINOR_VERSION == 0
-#define OTP_R13B04
-#elif ERL_NIF_MAJOR_VERSION == 2 && ERL_NIF_MINOR_VERSION == 0
-#define OTP_R14A
-#define OTP_R14B
-#define OTP_R14B01
-#elif ERL_NIF_MAJOR_VERSION == 2 && ERL_NIF_MINOR_VERSION == 1
-#define OTP_R14B02
-#endif
-
-
-#ifdef OTP_R13B03
-
-#define enif_open_resource_type_compat enif_open_resource_type
-#define enif_alloc_resource_compat enif_alloc_resource
-#define enif_release_resource_compat enif_release_resource
-#define enif_alloc_binary_compat enif_alloc_binary
-#define enif_alloc_compat enif_alloc
-#define enif_release_binary_compat enif_release_binary
-#define enif_free_compat enif_free
-#define enif_get_atom_compat enif_get_atom
-#define enif_priv_data_compat enif_get_data
-#define enif_make_uint_compat enif_make_ulong
-
-#define enif_make_existing_atom_compat(E, N, R, Enc) \
-    enif_make_existing_atom(E, N, R)
-
-#define enif_make_string_compat(E, B, Enc) \
-    enif_make_string(E, B)
-
-#endif /* R13B03 */
-
-
-#ifdef OTP_R13B04
-
-#define enif_open_resource_type_compat enif_open_resource_type
-#define enif_alloc_resource_compat enif_alloc_resource
-#define enif_release_resource_compat enif_release_resource
-#define enif_alloc_binary_compat enif_alloc_binary
-#define enif_realloc_binary_compat enif_realloc_binary
-#define enif_release_binary_compat enif_release_binary
-#define enif_alloc_compat enif_alloc
-#define enif_free_compat enif_free
-#define enif_get_atom_compat enif_get_atom
-#define enif_priv_data_compat enif_priv_data
-#define enif_make_string_compat enif_make_string
-#define enif_make_uint_compat enif_make_uint
-
-#define enif_make_existing_atom_compat(E, N, R, Enc) \
-    enif_make_existing_atom(E, N, R)
-
-
-#endif /* R13B04 */
-
-
-/* OTP R14A and future releases */
-#if !defined(OTP_R13B03) && !defined(OTP_R13B04)
-
 #define enif_open_resource_type_compat(E, N, D, F, T) \
     enif_open_resource_type(E, NULL, N, D, F, T)
 
@@ -118,8 +58,6 @@ extern "C" {
 #define enif_make_string_compat enif_make_string
 #define enif_make_existing_atom_compat enif_make_existing_atom
 #define enif_make_uint_compat enif_make_uint
-
-#endif  /* R14 and future releases */
 
 
 #ifdef __cplusplus
