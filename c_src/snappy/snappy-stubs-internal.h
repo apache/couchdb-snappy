@@ -45,6 +45,11 @@
 #include <sys/mman.h>
 #endif
 
+#ifdef _MSC_VER
+#include <BaseTsd.h>
+typedef SSIZE_T ssize_t;
+#endif
+
 #include "snappy-stubs-public.h"
 
 #if defined(__x86_64__)
