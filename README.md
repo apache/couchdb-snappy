@@ -1,3 +1,4 @@
+
 # snappy-erlang-nif
 
 This is an Erlang NIF for Google's snappy fast compressor and decompressor.
