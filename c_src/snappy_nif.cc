@@ -43,6 +43,8 @@ class SnappyNifSink : public snappy::Sink
         ErlNifBinary& GetBin();
 
     private:
+        void EnsureSize(size_t append_length);
+
         ErlNifEnv* env;
         ErlNifBinary bin;
         size_t length;
@@ -67,6 +69,7 @@ void
 SnappyNifSink::Append(const char *data, size_t n)
 {
     if(data != (SC_PTR(bin.data) + length)) {
+        EnsureSize(n);
         memcpy(bin.data + length, data, n);
     }
     length += n;
@@ -75,16 +78,7 @@ SnappyNifSink::Append(const char *data, size_t n)
 char*
 SnappyNifSink::GetAppendBuffer(size_t len, char* scratch)
 {
-    size_t sz;
-    
-    if((length + len) > bin.size) {
-        sz = (len * 4) < 8192 ? 8192 : (len * 4);
-
-        if(!enif_realloc_binary_compat(env, &bin, bin.size + sz)) {
-            throw std::bad_alloc();
-        }
-    }
-
+    EnsureSize(len);
     return SC_PTR(bin.data) + length;
 }
 
@@ -99,6 +93,21 @@ SnappyNifSink::GetBin()
     return bin;
 }
 
+
+void
+SnappyNifSink::EnsureSize(size_t append_length)
+{
+    if((length + append_length) > bin.size) {
+        size_t sz = append_length * 4;
+        if(sz < 8192) {
+            sz = 8192;
+        }
+
+        if(!enif_realloc_binary_compat(env, &bin, bin.size + sz)) {
+            throw std::bad_alloc();
+        }
+    }
+}
 
 static inline ERL_NIF_TERM
 make_atom(ErlNifEnv* env, const char* name)
