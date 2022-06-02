@@ -7,3 +7,9 @@ priv
 *.la
 *~
 *.swp
+
+.idea
+_build
+*.d
+*.lock
+.DS_Store
