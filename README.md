@@ -8,11 +8,42 @@ Google snappy's official repository and bug tracking system is at:
 
 Its source is included in this project.
 
+# changelog
+
+- tag `1.1.2` as tests pass against OTP-24
+- tag `otp-24` compatibility
+- switch build chain to [rebar3] and [enc] requiring OTP20 or newer
+- tag `snappy-1.1.8`, also first version compatible with OTP23 (thanks @skaes)
+- tag `snappy-1.1.3`
+- add a changelog
+
+[rebar3]: https://rebar3.org/
+[enc]: https://github.com/davisp/erlang-native-compiler
 
 # site
 
-https://github.com/fdmanana/snappy-erlang-nif
+https://github.com/skunkwerks/snappy-erlang-nif
 
+# credits
+
+Software is built by a few people and maintained by many. Thank-you for
+all your patches!
+
+
+- Arne Ehrlich <Arne.Ehrlich@groknet.de>
+- Bryan Chan <bryanpkc@gmail.com>
+- Dave Cottlehuber <dch@skunkwerks.at>
+- Filipe David Manana <fdmanana@apache.org>
+- Joshua Scott <joshua.scott@gmail.com>
+- Kelly McLaughlin <kelly@basho.com>
+- Louis-Philippe Gauthier <lpgauth@gmail.com>
+- Mikhail Uvarov <arcusfelis@gmail.com>
+- Peter Membrey <peter@membrey.hk>
+- Piotr Nosek <piotr.nosek@erlang-solutions.com>
+- benoitc <bchesneau@gmail.com>
+- @dch314
+- glejeune <gregoire.lejeune@free.fr>
+- Stefan Kaes <stkaes@gmail.com>
 
 # performance tests
 

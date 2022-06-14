@@ -33,24 +33,20 @@ init() ->
     Dir ->
         filename:join(Dir, "snappy_nif")
     end,
-    (catch erlang:load_nif(SoName, 0)),
-    case erlang:system_info(otp_release) of
-    "R13B03" -> true;
-    _ -> ok
-    end.
+    erlang:load_nif(SoName, 0).
 
 
 compress(_IoList) ->
-    exit(snappy_nif_not_loaded).
+    erlang:nif_error(snappy_nif_not_loaded).
 
 
 decompress(_IoList) ->
-    exit(snappy_nif_not_loaded).
+    erlang:nif_error(snappy_nif_not_loaded).
 
 
 uncompressed_length(_IoList) ->
-    exit(snappy_nif_not_loaded).
+    erlang:nif_error(snappy_nif_not_loaded).
 
 
 is_valid(_IoList) ->
-    exit(snappy_nif_not_loaded).
+    erlang:nif_error(snappy_nif_not_loaded).
