@@ -1,4 +1,4 @@
-REBAR?=rebar
+REBAR3?=rebar3
 
 
 .PHONY: all
@@ -9,7 +9,7 @@ all: build
 .PHONY: build
 # target: build - Builds the project
 build:
-	$(REBAR) compile
+	$(REBAR3) compile
 
 
 .PHONY: check
@@ -20,7 +20,7 @@ check: build eunit
 .PHONY: clean
 # target: clean - Removes build artifacts
 clean:
-	$(REBAR) clean
+	$(REBAR3) clean
 
 
 .PHONY: distclean
@@ -32,7 +32,7 @@ distclean: clean
 .PHONY: eunit
 # target: eunit - Runs eunit test suite
 eunit:
-	$(REBAR) eunit
+	$(REBAR3) eunit
 
 
 .PHONY: help
