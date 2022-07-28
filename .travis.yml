@@ -13,14 +13,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-dist: bionic
+dist: focal
 
 language: erlang
 
 otp_release:
-  - "25.0"
   - "24.3.1"
   - "23.3.1"
+  - "22.3"
 
 script:
   - make check
