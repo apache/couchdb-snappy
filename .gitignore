@@ -2,8 +2,10 @@ Makefile
 ebin
 priv
 .eunit
+*.d
 *.o
 *.lo
 *.la
 *~
 *.swp
+compile_commands.json
