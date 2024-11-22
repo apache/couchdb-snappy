@@ -72,3 +72,14 @@ decompression() ->
     ?assertEqual({ok, BigData}, snappy:decompress(Compressed3)),
     ok.
 
+can_compress_and_decompress_binary_that_triggers_corruption_with_o3_test() ->
+    % triggers a corruption when compiled with -O3, but not with -O0,
+    % on OTP25, 26, 27 at least *and* clang18, but not clang16. GCC to be tested.
+    % See https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=282217 for background.
+    Doc =[<<"00000000-7fffffff">>],
+    {ok, C} = snappy:compress(erlang:term_to_binary(Doc)),
+    true = snappy:is_valid(C),
+    {ok, U} = snappy:decompress(C),
+    New = erlang:binary_to_term(U),
+    ?assertEqual(Doc, New),
+    ok.
