@@ -8,121 +8,114 @@ Google snappy's official repository and bug tracking system is at:
 
 Its source is included in this project.
 
-
 # site
 
 https://github.com/fdmanana/snappy-erlang-nif
 
-
 # performance tests
 
-Snappy is much faster than zlib's deflate compression, specially for reasonably large amounts of
-data. Here follow a few basic tests.
+Snappy is much faster than zlib's deflate compression, specially for reasonably
+large amounts of data. Here follow a few basic tests.
 
-<pre>
-Erlang R14B02 (erts-5.8.3) [source] [smp:2:2] [rq:2] [async-threads:0] [hipe] [kernel-poll:false]
+```erl
+Erlang/OTP 26 [erts-14.2.5.10] [source] [64-bit] [smp:16:16] [ds:16:16:10] [async-threads:1]
 
-Eshell V5.8.3  (abort with ^G)
-1&gt; code:add_path("ebin").
+Eshell V14.2.5.10 (press Ctrl+G to abort, type help(). for help)
+1> code:add_path("ebin").
 true
-2&gt; {ok, J} = file:read_file("../seatoncouch/doc_11k.json").
-{ok,&lt;&lt;"{\n\"data3\":\"ColreUHAtn8iYvHIHw2ohiAuaXNGNX9WhlwANGDBYKYs6YEvHXgFXRkWuYoFyfLVqtjZNPedtukWRDXFz7VUOl4APLS7GB9Nw"...&gt;&gt;}
-3&gt;
-3&gt; timer:tc(snappy, compress, [J]).
-{4365,
- {ok,&lt;&lt;"úZðÔ{\n\"data3\":\"ColreUHAtn8iYvHIHw2ohiAuaXNGNX9WhlwANGDBYKYs6YEvHXgFXRkWuYoFyfLVqtjZNPedtukWRDXFz7VUO"...&gt;&gt;}}
-4&gt; timer:tc(snappy, compress, [J]).
-{115,
- {ok,&lt;&lt;"úZðÔ{\n\"data3\":\"ColreUHAtn8iYvHIHw2ohiAuaXNGNX9WhlwANGDBYKYs6YEvHXgFXRkWuYoFyfLVqtjZNPedtukWRDXFz7VUO"...&gt;&gt;}}
-5&gt; timer:tc(snappy, compress, [J]).
-{113,
- {ok,&lt;&lt;"úZðÔ{\n\"data3\":\"ColreUHAtn8iYvHIHw2ohiAuaXNGNX9WhlwANGDBYKYs6YEvHXgFXRkWuYoFyfLVqtjZNPedtukWRDXFz7VUO"...&gt;&gt;}}
-6&gt; timer:tc(snappy, compress, [J]).
-{112,
- {ok,&lt;&lt;"úZðÔ{\n\"data3\":\"ColreUHAtn8iYvHIHw2ohiAuaXNGNX9WhlwANGDBYKYs6YEvHXgFXRkWuYoFyfLVqtjZNPedtukWRDXFz7VUO"...&gt;&gt;}}
-7&gt; timer:tc(snappy, compress, [J]).
-{113,
- {ok,&lt;&lt;"úZðÔ{\n\"data3\":\"ColreUHAtn8iYvHIHw2ohiAuaXNGNX9WhlwANGDBYKYs6YEvHXgFXRkWuYoFyfLVqtjZNPedtukWRDXFz7VUO"...&gt;&gt;}}
-8&gt; timer:tc(snappy, compress, [J]).
-{111,
- {ok,&lt;&lt;"úZðÔ{\n\"data3\":\"ColreUHAtn8iYvHIHw2ohiAuaXNGNX9WhlwANGDBYKYs6YEvHXgFXRkWuYoFyfLVqtjZNPedtukWRDXFz7VUO"...&gt;&gt;}}
-9&gt;
-9&gt; timer:tc(zlib, zip, [J]).
-{1025,
- &lt;&lt;237,88,217,142,226,88,18,125,175,175,104,241,108,89,
-   119,95,234,13,39,24,179,153,37,49,182,25,181,...&gt;&gt;}
-10&gt; timer:tc(zlib, zip, [J]).
-{753,
- &lt;&lt;237,88,217,142,226,88,18,125,175,175,104,241,108,89,
-   119,95,234,13,39,24,179,153,37,49,182,25,181,...&gt;&gt;}
-11&gt; timer:tc(zlib, zip, [J]).
-{974,
- &lt;&lt;237,88,217,142,226,88,18,125,175,175,104,241,108,89,
-   119,95,234,13,39,24,179,153,37,49,182,25,181,...&gt;&gt;}
-12&gt; timer:tc(zlib, zip, [J]).
-{753,
- &lt;&lt;237,88,217,142,226,88,18,125,175,175,104,241,108,89,
-   119,95,234,13,39,24,179,153,37,49,182,25,181,...&gt;&gt;}
-13&gt; timer:tc(zlib, zip, [J]).
-{960,
- &lt;&lt;237,88,217,142,226,88,18,125,175,175,104,241,108,89,
-   119,95,234,13,39,24,179,153,37,49,182,25,181,...&gt;&gt;}
-14&gt; timer:tc(zlib, zip, [J]).
-{769,
- &lt;&lt;237,88,217,142,226,88,18,125,175,175,104,241,108,89,
-   119,95,234,13,39,24,179,153,37,49,182,25,181,...&gt;&gt;}
-15&gt;
-15&gt; byte_size(element(2, snappy:compress(J))).
-2846
-16&gt; byte_size(zlib:zip(J)).
-1858
-17&gt;
-17&gt; crypto:start().
+2> {ok, J} = file:read_file("doc_11k.json").
+{ok,<<"{\n  \"data3\": \"vh3w3TyPAxe01SOJhOgTMzOI8vO6tUZv0h36XVdRvECcDBJW5VAeLOJC1u9NRumMg5BcDp932M41Plr1Rg0sekoUawsGZL"...>>}
+3> timer:tc(snappy, compress, [J]).
+{251616,
+ {ok,<<"øUô÷*{\n  \"data3\": \"vh3w3TyPAxe01SOJhOgTMzOI8vO6tUZv0h36XVdRvECcDBJW5VAeLOJC1u9NRumMg5BcDp932M41Plr1R"...>>}}
+4> timer:tc(snappy, compress, [J]).
+{59,
+ {ok,<<"øUô÷*{\n  \"data3\": \"vh3w3TyPAxe01SOJhOgTMzOI8vO6tUZv0h36XVdRvECcDBJW5VAeLOJC1u9NRumMg5BcDp932M41Plr1R"...>>}}
+5> timer:tc(snappy, compress, [J]).
+{36,
+ {ok,<<"øUô÷*{\n  \"data3\": \"vh3w3TyPAxe01SOJhOgTMzOI8vO6tUZv0h36XVdRvECcDBJW5VAeLOJC1u9NRumMg5BcDp932M41Plr1R"...>>}}
+6> timer:tc(snappy, compress, [J]).
+{57,
+ {ok,<<"øUô÷*{\n  \"data3\": \"vh3w3TyPAxe01SOJhOgTMzOI8vO6tUZv0h36XVdRvECcDBJW5VAeLOJC1u9NRumMg5BcDp932M41Plr1R"...>>}}
+7> timer:tc(snappy, compress, [J]).
+{34,
+ {ok,<<"øUô÷*{\n  \"data3\": \"vh3w3TyPAxe01SOJhOgTMzOI8vO6tUZv0h36XVdRvECcDBJW5VAeLOJC1u9NRumMg5BcDp932M41Plr1R"...>>}}
+8> timer:tc(snappy, compress, [J]).
+{53,
+ {ok,<<"øUô÷*{\n  \"data3\": \"vh3w3TyPAxe01SOJhOgTMzOI8vO6tUZv0h36XVdRvECcDBJW5VAeLOJC1u9NRumMg5BcDp932M41Plr1R"...>>}}
+9>
+   timer:tc(zlib, zip, [J]).
+{461,
+ <<21,154,71,14,165,74,18,69,231,127,21,95,181,2,188,233,
+   25,222,123,207,12,239,125,98,91,189,247,...>>}
+10> timer:tc(zlib, zip, [J]).
+{431,
+ <<21,154,71,14,165,74,18,69,231,127,21,95,181,2,188,233,
+   25,222,123,207,12,239,125,98,91,189,247,...>>}
+11> timer:tc(zlib, zip, [J]).
+{440,
+ <<21,154,71,14,165,74,18,69,231,127,21,95,181,2,188,233,
+   25,222,123,207,12,239,125,98,91,189,247,...>>}
+12> timer:tc(zlib, zip, [J]).
+{332,
+ <<21,154,71,14,165,74,18,69,231,127,21,95,181,2,188,233,
+   25,222,123,207,12,239,125,98,91,189,247,...>>}
+13> timer:tc(zlib, zip, [J]).
+{303,
+ <<21,154,71,14,165,74,18,69,231,127,21,95,181,2,188,233,
+   25,222,123,207,12,239,125,98,91,189,247,...>>}
+14> timer:tc(zlib, zip, [J]).
+{406,
+ <<21,154,71,14,165,74,18,69,231,127,21,95,181,2,188,233,
+   25,222,123,207,12,239,125,98,91,189,247,...>>}
+15>
+    byte_size(element(2, snappy:compress(J))).
+11005
+16> byte_size(zlib:zip(J)).
+8284
+```
+
+```erl
+17> crypto:start().
 ok
-18&gt; Large = base64:encode(crypto:rand_bytes(100 * 1024)).
-&lt;&lt;"72GMvPLuWJLJeYSlNm9oNkYkbjTeSBDgTrqamQ/zgj7hcUge1co6LvldJyitKPZkMPQGnrN98EyqSyWto3k7ShNgiNc05Gt4zdXSbTVSDzeID661DnJX"...&gt;&gt;
-19&gt;
-19&gt; timer:tc(snappy, compress, [Large]).
-{365,
- {ok,&lt;&lt;216,170,8,244,255,127,55,50,71,77,118,80,76,117,
-       87,74,76,74,101,89,83,108,78,109,57,...&gt;&gt;}}
-20&gt; timer:tc(snappy, compress, [Large]).
-{541,
- {ok,&lt;&lt;216,170,8,244,255,127,55,50,71,77,118,80,76,117,
-       87,74,76,74,101,89,83,108,78,109,57,...&gt;&gt;}}
-21&gt; timer:tc(snappy, compress, [Large]).
-{455,
- {ok,&lt;&lt;216,170,8,244,255,127,55,50,71,77,118,80,76,117,
-       87,74,76,74,101,89,83,108,78,109,57,...&gt;&gt;}}
-22&gt; timer:tc(snappy, compress, [Large]).
-{479,
- {ok,&lt;&lt;216,170,8,244,255,127,55,50,71,77,118,80,76,117,
-       87,74,76,74,101,89,83,108,78,109,57,...&gt;&gt;}}
-23&gt;
-23&gt; timer:tc(zlib, zip, [Large]).
-{14666,
- &lt;&lt;20,155,181,118,195,64,20,5,63,72,133,152,74,49,147,197,
-   234,196,204,236,175,143,115,210,164,112,188,...&gt;&gt;}
-24&gt; timer:tc(zlib, zip, [Large]).
-{19716,
- &lt;&lt;20,155,181,118,195,64,20,5,63,72,133,152,74,49,147,197,
-   234,196,204,236,175,143,115,210,164,112,188,...&gt;&gt;}
-25&gt; timer:tc(zlib, zip, [Large]).
-{14561,
- &lt;&lt;20,155,181,118,195,64,20,5,63,72,133,152,74,49,147,197,
-   234,196,204,236,175,143,115,210,164,112,188,...&gt;&gt;}
-26&gt; timer:tc(zlib, zip, [Large]).
-{21683,
- &lt;&lt;20,155,181,118,195,64,20,5,63,72,133,152,74,49,147,197,
-   234,196,204,236,175,143,115,210,164,112,188,...&gt;&gt;}
-27&gt; timer:tc(zlib, zip, [Large]).
-{11575,
- &lt;&lt;20,155,181,118,195,64,20,5,63,72,133,152,74,49,147,197,
-   234,196,204,236,175,143,115,210,164,112,188,...&gt;&gt;}
-28&gt;
-28&gt; byte_size(element(2, snappy:compress(Large))).
-136554
-29&gt; byte_size(zlib:zip(Large)).
-103440
-30&gt;
-</pre>
+18> Large = base64:encode(crypto:strong_rand_bytes(100 * 1024)).
+<<"E8CcPijHF6N2/WMTvRkLr7FdkCWlndHx8iVh3n7ZPHD3khPnzPefazjDk7Ox2B1zIxA2TVB+4RDBSk2DmDXQM4sasup06Y2uZrsWgnUF9DBTkJVxuB3L"...>>
+19> timer:tc(snappy, compress, [Large]).
+{201,
+ {ok,<<"Øª\bôÿÿE8CcPijHF6N2/WMTvRkLr7FdkCWlndHx8iVh3n7ZPHD3khPnzPefazjDk7Ox2B1zIxA2TVB+4RDBSk2DmDXQM4sasup06Y"...>>}}
+20> timer:tc(snappy, compress, [Large]).
+{204,
+ {ok,<<"Øª\bôÿÿE8CcPijHF6N2/WMTvRkLr7FdkCWlndHx8iVh3n7ZPHD3khPnzPefazjDk7Ox2B1zIxA2TVB+4RDBSk2DmDXQM4sasup06Y"...>>}}
+21> timer:tc(snappy, compress, [Large]).
+{179,
+ {ok,<<"Øª\bôÿÿE8CcPijHF6N2/WMTvRkLr7FdkCWlndHx8iVh3n7ZPHD3khPnzPefazjDk7Ox2B1zIxA2TVB+4RDBSk2DmDXQM4sasup06Y"...>>}}
+22> timer:tc(snappy, compress, [Large]).
+{312,
+ {ok,<<"Øª\bôÿÿE8CcPijHF6N2/WMTvRkLr7FdkCWlndHx8iVh3n7ZPHD3khPnzPefazjDk7Ox2B1zIxA2TVB+4RDBSk2DmDXQM4sasup06Y"...>>}}
+23>
+    timer:tc(zlib, zip, [Large]).
+{7116,
+ <<20,155,197,114,227,64,20,69,63,72,11,49,45,197,44,89,
+   12,59,49,51,235,235,39,179,74,57,113,...>>}
+24> timer:tc(zlib, zip, [Large]).
+{7254,
+ <<20,155,197,114,227,64,20,69,63,72,11,49,45,197,44,89,
+   12,59,49,51,235,235,39,179,74,57,113,...>>}
+25> timer:tc(zlib, zip, [Large]).
+{7136,
+ <<20,155,197,114,227,64,20,69,63,72,11,49,45,197,44,89,
+   12,59,49,51,235,235,39,179,74,57,113,...>>}
+26> timer:tc(zlib, zip, [Large]).
+{6760,
+ <<20,155,197,114,227,64,20,69,63,72,11,49,45,197,44,89,
+   12,59,49,51,235,235,39,179,74,57,113,...>>}
+27> timer:tc(zlib, zip, [Large]).
+{7349,
+ <<20,155,197,114,227,64,20,69,63,72,11,49,45,197,44,89,
+   12,59,49,51,235,235,39,179,74,57,113,...>>}
+28>
+    byte_size(element(2, snappy:compress(Large))).
+136548
+29> byte_size(zlib:zip(Large)).
+103438
+```
