@@ -1,3 +1,4 @@
+# Get `rebar` from https://github.com/apache/couchdb-rebar
 REBAR?=rebar
 
 
